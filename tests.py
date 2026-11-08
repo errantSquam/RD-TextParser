@@ -1,11 +1,10 @@
 import re
 from fe10_script_parser import Fe10ScriptParser
 import os
-import codecs
+#REQUIRED FOR TESTING: Input folder with a list of .yml files
+#They are derived from .m files (from RD's Mess folder)
+#then converted to YML using Lumina https://github.com/thane98/lumina
 
-import yaml
-#REQUIRED FOR TESTING: Input folder (taken from RD's Mess file) with list of .m files
-#Then convert to YML using Lumina
 
 file_directory = os.getcwd()+"/input"
 
@@ -54,10 +53,6 @@ def compare_text_verbose(sample):
     print(f"Is reconstructed correctly: {sample == reconstructed}")
 
 
-
-
-#message = open(file_directory + "/" + "c0000.yml", "r", encoding="shift_jis", errors="replace").read()
-
 break_outer = False
 for file in os.listdir(file_directory):
     if break_outer:
@@ -69,9 +64,17 @@ for file in os.listdir(file_directory):
     messages = re.findall(f'(\w+): "(.*?)"', message)
 
     for m in messages:
-        result = compare_text(file, m[0], m[1])
-        if result == False:
-            compare_text_verbose(m[1])
+        try:
+            result = compare_text(file, m[0], m[1])
+            if result == False:
+                compare_text_verbose(m[1])
+                break_outer = True
+                break
+        except Exception as e:
+            print(f"Cannot be reconstructed and throws errors: {file} {m[0]}")
+            print(repr(e))
+            print(m[1])
             break_outer = True
             break
+
 

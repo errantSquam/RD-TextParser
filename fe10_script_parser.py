@@ -21,7 +21,8 @@ class Fe10ScriptParser:
         self.eye_types = {
             "c":"Closed",
             "h":"HalfOpen",
-            "o":"Open"
+            "o":"Open",
+            "O":"Open_UNKNOWN"
         }
         self.expression_types = {
             "a":"MouthSet2",
@@ -172,7 +173,7 @@ class Fe10ScriptParser:
             },
             "PauseMs" : {
                 "Bytecode": "4",
-                "Function": "PlaySound",
+                "Function": "PauseMs",
                 "Args":[{
                     "ArgName":"Type",
                     "Mappings": None
